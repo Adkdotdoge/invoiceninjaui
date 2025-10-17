@@ -54,8 +54,21 @@ i18n.use(initReactI18next).init({
   },
 });
 
-const Router =
-  import.meta.env.VITE_ROUTER === 'hash' ? HashRouter : BrowserRouter;
+const baseUrl = import.meta.env.BASE_URL;
+
+const basename =
+  baseUrl && baseUrl !== '/'
+    ? baseUrl.endsWith('/')
+      ? baseUrl.slice(0, -1)
+      : baseUrl
+    : undefined;
+
+const RouterWrapper = ({ children }: { children: React.ReactNode }) =>
+  import.meta.env.VITE_ROUTER === 'hash' ? (
+    <HashRouter>{children}</HashRouter>
+  ) : (
+    <BrowserRouter basename={basename}>{children}</BrowserRouter>
+  );
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -94,11 +107,11 @@ createRoot(container).render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <GoogleOAuth>
-          <Router>
+          <RouterWrapper>
             <ScrollToTop>
               <App />
             </ScrollToTop>
-          </Router>
+          </RouterWrapper>
         </GoogleOAuth>
       </Provider>
     </QueryClientProvider>

@@ -3,11 +3,14 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  base: '/billing/',
   plugins: [tsconfigPaths(), react()],
   server: {
     port: 3000,
   },
   build: {
+    outDir: '../../public/billing',
+    emptyOutDir: true,
     assetsDir: 'react',
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
