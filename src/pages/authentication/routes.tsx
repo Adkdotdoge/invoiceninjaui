@@ -22,6 +22,7 @@ export const authenticationRoutes = (
   <>
     <Route element={<PublicRoute />}>
       <Route path="/login" element={<Login />} />
+      <Route path="/login/:invitation" element={<Login />} />
       <Route path="/recover_password" element={<RecoverPassword />} />
       <Route element={<HostedRoute />}>
         <Route path="/register" element={<Register />} />

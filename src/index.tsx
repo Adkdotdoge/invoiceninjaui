@@ -63,11 +63,26 @@ const basename =
       : baseUrl
     : undefined;
 
+const resolveRuntimeBasename = () => {
+  if (typeof window === 'undefined') {
+    return basename;
+  }
+
+  const possibleBasenames = ['/billing', '/client'];
+  const match = possibleBasenames.find((candidate) =>
+    window.location.pathname.startsWith(candidate)
+  );
+
+  return match ?? basename;
+};
+
 const RouterWrapper = ({ children }: { children: React.ReactNode }) =>
   import.meta.env.VITE_ROUTER === 'hash' ? (
     <HashRouter>{children}</HashRouter>
   ) : (
-    <BrowserRouter basename={basename}>{children}</BrowserRouter>
+    <BrowserRouter basename={resolveRuntimeBasename()}>
+      {children}
+    </BrowserRouter>
   );
 
 const queryClient = new QueryClient({

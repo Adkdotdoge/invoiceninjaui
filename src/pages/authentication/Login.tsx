@@ -31,6 +31,7 @@ import { version } from '$app/common/helpers/version';
 import { toast } from '$app/common/helpers/toast/toast';
 import classNames from 'classnames';
 import { ErrorMessage } from '$app/components/ErrorMessage';
+import { useParams } from 'react-router-dom';
 
 export function Login() {
   useTitle('login');
@@ -41,6 +42,7 @@ export function Login() {
   const [errors, setErrors] = useState<LoginValidation | undefined>(undefined);
   const [isFormBusy, setIsFormBusy] = useState(false);
   const [t] = useTranslation();
+  const { invitation } = useParams<{ invitation?: string }>();
 
   const [isDisable2faModalOpen, setIsDisable2faModalOpen] =
     useState<boolean>(false);
@@ -113,6 +115,10 @@ export function Login() {
               errorMessage={errors?.password}
               name="password"
             />
+
+            {invitation && (
+              <input type="hidden" name="company_key" value={invitation} />
+            )}
 
             <div className="space-y-2">
               <div className="flex flex-col lg:flex-row items-center justify-between">
